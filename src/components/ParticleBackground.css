@@ -1,0 +1,23 @@
+/* Background layer for the hero.
+   - position: absolute + inset: 0 covers the full hero section.
+   - z-index: 1 sits above the hero's background colour but below all content
+     (title z-2, figurine z-3, button/scroll-cue z-4).
+   - pointer-events: none lets clicks/hovers pass through to content above
+     (the effect still follows the cursor via a window-level listener). */
+.particle-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* the react-three-fiber <canvas> fills the layer.
+   r3f sets the canvas to pointer-events:auto for its raycaster, so force it
+   back to none — the cursor effect tracks a window-level listener, not the
+   canvas, so it keeps working while clicks pass straight through. */
+.particle-bg canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+}

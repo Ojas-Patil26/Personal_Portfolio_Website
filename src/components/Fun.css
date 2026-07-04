@@ -1,0 +1,267 @@
+/* ══════════════════════════════════════════
+   Fun / Photography Section
+   ══════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&display=swap');
+
+/* ── Section shell ─────────────────────── */
+.section-fun {
+  padding: 120px 0 80px;
+  background: var(--bg);
+  color: var(--text);
+  position: relative;
+  z-index: 10;
+}
+
+/* ── Header ──────────────────────────────── */
+.fun-header {
+  margin-bottom: 48px;
+}
+
+.fun-header-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.fun-eyebrow {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.fun-heading-row {
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.fun-heading {
+  font-family: 'Unbounded', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: clamp(40px, 6vw, 80px);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--text);
+  margin: 0;
+}
+
+.fun-heading em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.fun-camera {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text);
+  opacity: 0.45;
+  letter-spacing: 0.02em;
+}
+
+/* ══ Media grid — masonry (natural aspect ratio, no cropping) ═══ */
+.photo-grid {
+  columns: 2;
+  column-gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .photo-grid {
+    columns: 3;
+  }
+}
+
+/* ── Card — height comes from the item's own aspect-ratio (set inline) ── */
+.photo-card {
+  position: relative;
+  display: block;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  break-inside: avoid;
+  margin-bottom: 8px;
+}
+
+/* ── Media fill ──────────────────────────── */
+.photo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.photo-card:hover .photo-img {
+  transform: scale(1.04);
+}
+
+/* ── Hover darken overlay ────────────────── */
+.photo-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.35s ease;
+  pointer-events: none;
+}
+
+.photo-card:hover .photo-hover-overlay {
+  background: rgba(0, 0, 0, 0.22);
+}
+
+/* ── Hover arrow ─────────────────────────── */
+.photo-arrow {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: none;
+}
+
+.photo-card:hover .photo-arrow {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Focus style for keyboard nav */
+.photo-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ══ Lightbox ═════════════════════════════ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: 85vw;
+  max-height: 85vh;
+  display: flex;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Natural aspect ratio, no cropping — image/video sizes to fit the viewport */
+.lightbox-media {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 85vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+/* Lightbox buttons */
+.lightbox-close,
+.lightbox-prev,
+.lightbox-next {
+  position: fixed;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.lightbox-close {
+  top: 24px;
+  right: 24px;
+  width: 40px;
+  height: 40px;
+  font-size: 14px;
+}
+
+.lightbox-prev {
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+}
+
+.lightbox-next {
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+}
+
+.lightbox-close:hover,
+.lightbox-prev:hover,
+.lightbox-next:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.lightbox-counter {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+/* ── Reduced motion ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .photo-img,
+  .photo-hover-overlay,
+  .photo-arrow {
+    transition: none;
+  }
+}
+
+/* ── Responsive ──────────────────────────── */
+@media (max-width: 768px) {
+  .section-fun {
+    padding: 80px 0 60px;
+  }
+
+  .fun-header {
+    margin-bottom: 32px;
+  }
+
+  .lightbox {
+    padding: 16px;
+  }
+
+  .lightbox-prev { left: 8px; }
+  .lightbox-next { right: 8px; }
+}

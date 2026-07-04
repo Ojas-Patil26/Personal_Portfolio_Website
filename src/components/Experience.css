@@ -1,0 +1,327 @@
+/* ══════════════════════════════════════════
+   Experience Section
+   ══════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&display=swap');
+
+.section-experience {
+  padding: 120px 0 80px;
+  background: var(--bg);
+  color: var(--text);
+  position: relative;
+  z-index: 10;
+}
+
+/* ── Section header ──────────────────────── */
+.exp-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid color-mix(in srgb, var(--secondary) 40%, transparent);
+  padding-bottom: 32px;
+  margin-bottom: 64px;
+}
+
+.exp-eyebrow {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.exp-heading {
+  font-family: 'Unbounded', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: clamp(40px, 6vw, 80px);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--text);
+  margin: 0;
+}
+
+/* Italic orange emphasis word */
+.exp-heading em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+/* ── Timeline list ───────────────────────── */
+.exp-list {
+  position: relative;
+}
+
+/* ── Rail ────────────────────────────────── */
+.exp-rail {
+  position: absolute;
+  left: 120px;                /* aligns with dot position */
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: color-mix(in srgb, var(--secondary) 35%, transparent);
+  pointer-events: none;
+}
+
+.exp-rail-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0%;
+  background: linear-gradient(
+    to bottom,
+    var(--accent),
+    color-mix(in srgb, var(--accent) 40%, transparent)
+  );
+  transition: height 0.12s ease;
+}
+
+/* ── Entry ───────────────────────────────── */
+.exp-entry {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 48px;
+  padding: 56px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--secondary) 25%, transparent);
+  position: relative;
+
+  /* Scroll-reveal initial state */
+  opacity: 0;
+  transform: translateX(24px);
+  transition:
+    opacity  0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exp-entry:first-child { padding-top: 24px; }
+.exp-entry:last-child  { border-bottom: none; }
+
+.exp-entry.in-view {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ── Year column ─────────────────────────── */
+.exp-year-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding-top: 8px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.exp-period {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: 0.4;
+  line-height: 1.2;
+}
+
+.exp-period-sep {
+  font-size: 9px;
+  color: var(--text);
+  opacity: 0.2;
+}
+
+.exp-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--secondary);
+  border: 2px solid var(--bg);
+  margin-top: 12px;
+  flex-shrink: 0;
+  transition:
+    background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    transform  0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exp-entry:hover .exp-dot {
+  background: var(--accent);
+  transform: scale(1.5);
+}
+
+/* ── Company block ───────────────────────── */
+.exp-block {
+  transform: translateX(0);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.exp-entry:hover .exp-block {
+  transform: translateX(12px);
+}
+
+/* Company name — huge editorial display */
+.exp-company {
+  font-family: 'Unbounded', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: clamp(28px, 4.5vw, 64px);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--text);
+  margin: 0 0 10px 0;
+  transition: color 0.25s ease;
+}
+
+.exp-entry:hover .exp-company {
+  color: var(--text);   /* stays text color — the dot + slide is the signal */
+}
+
+/* Role — orange accent */
+.exp-role {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(14px, 1.6vw, 18px);
+  font-weight: 500;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+/* Location */
+.exp-location {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text);
+  opacity: 0.4;
+  letter-spacing: 0.04em;
+  margin-bottom: 24px;
+}
+
+/* ── Detail ──────────────────────────────── */
+.exp-detail {
+  margin-top: 4px;
+}
+
+.exp-bullets {
+  list-style: none;
+  margin: 0 0 20px 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.exp-bullets li {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text);
+  opacity: 0.75;
+  padding-left: 0;
+  position: relative;
+}
+
+/* ── Tags ────────────────────────────────── */
+.exp-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.exp-tag {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: 0.5;
+  padding: 4px 10px;
+  border: 1px solid color-mix(in srgb, var(--secondary) 60%, transparent);
+  border-radius: 20px;
+  transition:
+    color        0.2s ease,
+    border-color 0.2s ease,
+    opacity      0.2s ease;
+}
+
+.exp-entry:hover .exp-tag {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  opacity: 1;
+}
+
+/* ── Responsive ──────────────────────────── */
+@media (max-width: 768px) {
+  .section-experience {
+    padding: 80px 0 60px;
+  }
+
+  .exp-section-header {
+    margin-bottom: 40px;
+  }
+
+  .exp-entry {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 36px 0;
+  }
+
+  .exp-year-col {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .exp-dot {
+    margin-top: 0;
+    margin-left: 8px;
+  }
+
+  .exp-rail {
+    display: none;
+  }
+
+  .exp-entry:hover .exp-block {
+    transform: none; /* no slide on mobile */
+  }
+
+  .exp-company {
+    font-size: clamp(24px, 7vw, 40px);
+  }
+
+  .exp-bullets li {
+    font-size: 14px;
+  }
+}
+
+/* ── Reduced motion ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .exp-entry {
+    transition: opacity 0.3s ease;
+    transform: none;
+  }
+
+  .exp-entry.in-view {
+    transform: none;
+  }
+
+  .exp-block {
+    transition: none;
+  }
+
+  .exp-entry:hover .exp-block {
+    transform: none;
+  }
+
+  .exp-dot {
+    transition: background 0.2s ease;
+  }
+
+  .exp-entry:hover .exp-dot {
+    transform: none;
+  }
+
+  .exp-rail-fill {
+    transition: none;
+  }
+}

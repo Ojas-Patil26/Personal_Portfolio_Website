@@ -1,0 +1,459 @@
+/* ══════════════════════════════════════════
+   Skills Section
+   ══════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&display=swap');
+
+/* ── Section shell ─────────────────────── */
+.section-skills {
+  padding: 120px 0 0;
+  color: var(--text);
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+
+  background-color: var(--bg);
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--secondary) 55%, transparent) 0.5px,
+    transparent 0.5px
+  );
+  background-size: 20px 20px;
+}
+
+/* ── Section header ────────────────────── */
+.skills-header {
+  margin-bottom: 48px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity   0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skills-header.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.skills-eyebrow {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+
+.skills-heading {
+  font-family: 'Unbounded', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: clamp(40px, 6vw, 80px);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--text);
+  margin: 0;
+}
+
+.skills-heading em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+/* ── 4-column card grid ──────────────────  */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid color-mix(in srgb, var(--secondary) 28%, transparent);
+  border-radius: 8px;
+  overflow: hidden;
+  /* ↓ tightened — certs section follows immediately */
+  margin-bottom: 32px;
+}
+
+/* ── Individual card ─────────────────────── */
+.skill-group {
+  padding: 36px 28px 44px;
+  background: color-mix(in srgb, var(--bg) 92%, var(--secondary) 8%);
+  border-right: 1px solid color-mix(in srgb, var(--secondary) 28%, transparent);
+  position: relative;
+  cursor: default;
+
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity    0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform  0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.35s ease;
+}
+
+.skill-group:last-child {
+  border-right: none;
+}
+
+.skill-group.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.skill-group:hover {
+  background: color-mix(in srgb, var(--bg) 84%, var(--secondary) 16%);
+}
+
+/* Accent sweep bar */
+.skill-group::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background: var(--accent);
+  transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.skill-group:hover::before {
+  height: 100%;
+}
+
+.skill-group-num {
+  font-family: 'Unbounded', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  opacity: 0.5;
+  margin-bottom: 12px;
+  transition: opacity 0.25s ease;
+}
+
+.skill-group:hover .skill-group-num {
+  opacity: 1;
+}
+
+.skill-group-label {
+  font-family: 'Unbounded', system-ui, sans-serif;
+  font-size: clamp(13px, 1.2vw, 18px);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--text);
+  margin-bottom: 24px;
+  transition: color 0.25s ease;
+}
+
+.skill-group:hover .skill-group-label {
+  color: var(--accent);
+}
+
+.skill-group-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.skill-group-item {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--text);
+  opacity: 0.55;
+  padding-left: 14px;
+  position: relative;
+  transition: opacity 0.2s ease;
+}
+
+.skill-group-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.4;
+  transition: opacity 0.2s ease;
+}
+
+.skill-group:hover .skill-group-item        { opacity: 0.82; }
+.skill-group:hover .skill-group-item::before { opacity: 1; }
+
+/* ══ Certifications grid ══════════════════ */
+
+.skills-certs {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity   0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s,
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+
+.skills-certs.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Category-style label + rule */
+.skills-certs-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.skills-certs-label {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: 0.45;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.skills-certs-rule {
+  flex: 1;
+  height: 1px;
+  background: color-mix(in srgb, var(--secondary) 35%, transparent);
+}
+
+/* 2 × 2 grid */
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+/* ── Single cert tile ────────────────────── */
+.cert-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 18px 40px 16px 18px; /* right pad leaves room for arrow */
+  border: 1px solid color-mix(in srgb, var(--secondary) 35%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--bg) 92%, var(--secondary) 8%);
+  text-decoration: none;
+  cursor: default;
+  transition:
+    border-color 0.25s ease,
+    background   0.25s ease;
+}
+
+.cert-card--link {
+  cursor: pointer;
+}
+
+.cert-card--link:hover {
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  background: color-mix(in srgb, var(--accent) 4%, var(--bg));
+}
+
+/* Issuer badge */
+.cert-card-issuer {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  line-height: 1;
+}
+
+/* Cert name */
+.cert-card-name {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+/* Date */
+.cert-card-date {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text);
+  opacity: 0.35;
+  margin-top: 2px;
+}
+
+/* External link arrow */
+.cert-card-arrow {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  font-size: 13px;
+  color: var(--accent);
+  opacity: 0.45;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.cert-card--link:hover .cert-card-arrow {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+/* ══ Marquee section ══════════════════════
+   Full-bleed; reduced top pad from 64 → 28  */
+.skills-marquee-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 28px 0 72px;
+}
+
+/* ── Single row ──────────────────────────── */
+.marquee-row {
+  position: relative;
+  overflow: hidden;
+}
+
+.marquee-row::before,
+.marquee-row::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 140px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.marquee-row::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg), transparent);
+}
+
+.marquee-row::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg), transparent);
+}
+
+.marquee-track {
+  display: flex;
+  gap: 8px;
+  width: max-content;
+  padding: 4px 0;
+}
+
+.marquee-left .marquee-track {
+  animation: marquee-scroll-left linear infinite;
+}
+
+.marquee-right .marquee-track {
+  animation: marquee-scroll-right linear infinite;
+}
+
+@keyframes marquee-scroll-left {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes marquee-scroll-right {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+/* ── Marquee chip ───────────────────────── */
+.skill-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--secondary) 55%, transparent);
+  background: color-mix(in srgb, var(--bg) 85%, var(--secondary) 15%);
+  color: var(--text);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  white-space: nowrap;
+  cursor: default;
+  transition:
+    color        0.2s ease,
+    border-color 0.2s ease,
+    background   0.2s ease;
+}
+
+.skill-chip:hover {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  background: color-mix(in srgb, var(--accent) 6%, var(--bg));
+}
+
+/* ── Reduced motion ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .skills-header,
+  .skill-group,
+  .skills-certs {
+    transition: background 0.2s ease;
+    opacity: 1;
+    transform: none;
+  }
+
+  .skill-group::before { transition: none; }
+  .marquee-track        { animation: none; }
+}
+
+/* ── Responsive — tablet 2-col grid ──────── */
+@media (max-width: 900px) {
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .skill-group:nth-child(2) { border-right: none; }
+  .skill-group:nth-child(3) { border-right: 1px solid color-mix(in srgb, var(--secondary) 28%, transparent); }
+  .skill-group:nth-child(1),
+  .skill-group:nth-child(2) {
+    border-bottom: 1px solid color-mix(in srgb, var(--secondary) 28%, transparent);
+  }
+
+  .certs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Mobile ──────────────────────────────── */
+@media (max-width: 640px) {
+  .section-skills { padding: 80px 0 0; }
+
+  .skills-header { margin-bottom: 36px; }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+    margin-bottom: 24px;
+  }
+
+  .skill-group {
+    border-right: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--secondary) 28%, transparent);
+    padding: 24px 20px 28px;
+  }
+
+  .skill-group:last-child { border-bottom: none; }
+
+  /* Reset tablet overrides */
+  .skill-group:nth-child(2) { border-right: none; }
+  .skill-group:nth-child(3) { border-right: none; }
+
+  .certs-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .skills-marquee-section {
+    padding: 24px 0 48px;
+  }
+
+  .marquee-row::before,
+  .marquee-row::after { width: 60px; }
+}

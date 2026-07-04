@@ -1,0 +1,151 @@
+/* ===================== NAVBAR ===================== */
+.navbar {
+  /* fixed (overlay) so it doesn't consume flow height — keeps the hero an
+     exact 100vh so the figure's feet land at the real viewport bottom */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 32px;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.brand {
+  font-weight: 900;
+  font-size: 22px;
+  color: var(--text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  letter-spacing: -0.02em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 500;
+  opacity: 0.85;
+}
+
+.nav-links a:hover {
+  opacity: 1;
+  color: var(--accent);
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  padding: 4px;
+}
+
+/* ===================== HERO ===================== */
+.hero {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  color: var(--text);
+}
+
+/* giant stacked title across the top, edge-to-edge */
+.title {
+  position: absolute;
+  top: 52px;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.title-text {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 183px;
+  letter-spacing: -0.01em;
+  fill: #000000;
+}
+
+body.dark .title-text {
+  fill: #EDEDED;
+}
+
+/* figurine video — front-facing, stands in front of ENGINEER */
+.figurine {
+  position: absolute;
+  left: 50%;
+  /* shoe lifted clear of the very bottom edge so it's never cropped;
+     bottom + height stays 80vh, so the head sits exactly where it was */
+  bottom: 2.5vh;
+  transform: translateX(-50%);
+  height: 77.5vh;
+  width: auto;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ghost resume button, bottom-right */
+.resume-btn {
+  position: absolute;
+  right: 32px;
+  bottom: 32px;
+  z-index: 4;
+  padding: 12px 26px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: var(--accent);
+  background: transparent;
+  border: 1.5px solid var(--accent);
+  border-radius: 4px;
+  transition: background-color 0.25s ease, color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.resume-btn:hover {
+  background: var(--accent);
+  color: #ffffff;
+}
+
+/* scroll indicator, bottom-left */
+.scroll-cue {
+  position: absolute;
+  left: 32px;
+  bottom: 32px;
+  z-index: 4;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: 0.5;
+  animation: bounce 1.5s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}

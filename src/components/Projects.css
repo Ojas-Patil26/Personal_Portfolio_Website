@@ -1,0 +1,527 @@
+/* ══════════════════════════════════════════
+   Projects Section
+   ══════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&display=swap');
+
+/* ── Outer scroll container ─────────────
+   Height is set inline: PROJECTS.length × 80vh
+   Gives scroll distance for the orbit.         */
+.section-projects {
+  position: relative;
+  background: var(--bg);
+  color: var(--text);
+  z-index: 10;
+}
+
+/* ── Sticky inner — pins to viewport ────── */
+.projects-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Section header — pinned together with the orbit, inside .projects-sticky ── */
+.projects-header-wrap {
+  padding: 110px 32px 0; /* clears fixed navbar; bottom gap handled by orbit-wrap */
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.projects-eyebrow {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.projects-heading {
+  font-family: 'Unbounded', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: clamp(32px, 5vw, 64px);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+.projects-subhead {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text);
+  opacity: 0.45;
+  margin: 0;
+}
+
+/* ── Orbit wrapper ───────────────────────── */
+.projects-orbit-wrap {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  /* moderate gap between heading and top of the card deck */
+  padding-top: 32px;
+  box-sizing: border-box;
+}
+
+/* ── Center circle — no border, clean bg ── */
+.projects-center-label {
+  position: absolute;
+  z-index: 5; /* sits behind the deck so rotating cards always render on top */
+  /* r=300, card height=360 → inner edge = 300-180 = 120px from centre
+     Max diameter = 240px; using 210px for comfortable breathing room */
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  max-width: none;
+  transition: background-color 0.4s ease;
+}
+
+.projects-center-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+  padding: 14px;
+  width: 100%;
+}
+
+.projects-center-counter {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 0;
+}
+
+.projects-center-title {
+  font-family: 'Unbounded', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--accent);
+  margin: 0;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* ── Spinning deck ───────────────────────── */
+.projects-deck {
+  position: relative;
+  width: 600px;
+  height: 600px;
+  z-index: 15; /* above the center label, so rotating cards never get hidden behind it */
+}
+
+/* ── Arm — positioned in the orbit ring ──── */
+.project-card-arm {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -140px; /* half card width  (280 / 2) */
+  margin-top: -180px;  /* half card height (360 / 2) */
+}
+
+/* ── Card ────────────────────────────────── */
+.project-card {
+  width: 280px;
+  height: 360px;
+  border-radius: 16px;
+  border: 1.5px solid color-mix(in srgb, var(--secondary) 60%, transparent);
+  padding: 20px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  /* No backdrop-filter — pure matte solid surface */
+  transition:
+    border-color     0.3s ease,
+    background-color 0.4s ease;
+  /* Subtle inner top highlight for material definition, no hazy shadow */
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.07);
+  cursor: default;
+}
+
+/* ── Matte card variants — solid tonal surfaces, no glass ── */
+.project-card--v0 {
+  background: color-mix(in srgb, var(--accent) 18%, var(--bg));
+}
+.project-card--v1 {
+  background: color-mix(in srgb, var(--secondary) 28%, var(--bg));
+}
+.project-card--v2 {
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg));
+}
+.project-card--v3 {
+  background: color-mix(in srgb, var(--secondary) 20%, var(--bg));
+}
+.project-card--v4 {
+  background: color-mix(in srgb, var(--accent) 26%, var(--bg));
+}
+
+/* Active card highlighted — pointer to signal clickability */
+.project-card:hover,
+.project-card.active {
+  border-color: var(--accent);
+}
+.project-card.active {
+  cursor: pointer;
+}
+
+/* ── Card top row ────────────────────────── */
+.project-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.project-card-top-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.project-card-expand-hint {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+}
+
+.project-card.active:hover .project-card-expand-hint {
+  opacity: 1;
+}
+
+.project-card-index {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--text);
+  opacity: 0.35;
+  background: color-mix(in srgb, var(--secondary) 30%, transparent);
+  padding: 3px 7px;
+  border-radius: 4px;
+}
+
+.project-card-tag {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.8;
+}
+
+/* ── Card body ───────────────────────────── */
+.project-card-body {
+  flex: 1;
+  padding: 12px 0 8px;
+}
+
+.project-card-title {
+  font-family: 'Unbounded', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+.project-card-desc {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text);
+  opacity: 0.55;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Card footer ─────────────────────────── */
+.project-card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.project-card-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.project-stack-tag {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  opacity: 0.45;
+  border: 1px solid color-mix(in srgb, var(--secondary) 40%, transparent);
+  border-radius: 3px;
+  padding: 2px 6px;
+  white-space: nowrap;
+}
+
+.project-card-links {
+  display: flex;
+  gap: 8px;
+}
+
+.project-card-link {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 4px;
+  padding: 3px 8px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.project-card-link:hover {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ── Scroll cue ──────────────────────────── */
+.projects-scroll-cue {
+  text-align: center;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text);
+  opacity: 0.3;
+  padding-bottom: 20px;
+  flex-shrink: 0;
+  margin: 0;
+}
+
+/* ── Reduced motion ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .projects-deck {
+    animation: none !important;
+  }
+}
+
+/* ── Responsive ──────────────────────────── */
+@media (max-width: 1024px) {
+  .projects-header-wrap {
+    padding: 56px 48px 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .projects-header-wrap {
+    padding: 48px 24px 0;
+  }
+
+  .projects-orbit-wrap {
+    padding-top: 20px;
+  }
+
+  .projects-deck {
+    width: 400px;
+    height: 400px;
+  }
+
+  /* Mobile cards — shrunk proportionally */
+  .project-card {
+    width: 190px;
+    height: 244px;
+    padding: 14px;
+  }
+
+  .project-card-arm {
+    margin-left: -95px;  /* 190 / 2 */
+    margin-top: -122px;  /* 244 / 2 */
+  }
+
+  .project-card-title {
+    font-size: 16px;
+  }
+
+  .project-card-desc {
+    font-size: 10px;
+    -webkit-line-clamp: 3;
+  }
+}
+
+/* ══════════════════════════════════════════
+   Expanded project overlay (portalled)
+   ══════════════════════════════════════════ */
+
+.project-expand-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+body.dark .project-expand-overlay {
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.project-expand-card {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 16px;
+  border: 1.5px solid color-mix(in srgb, var(--secondary) 60%, transparent);
+  padding: 28px 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  transition: background-color 0.4s ease;
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Top row: tag + close button */
+.project-expand-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.project-expand-tag {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.project-expand-close {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--secondary) 50%, transparent);
+  background: transparent;
+  color: var(--text);
+  font-size: 11px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.project-expand-close:hover {
+  background: color-mix(in srgb, var(--secondary) 20%, transparent);
+  border-color: var(--accent);
+}
+
+/* Title */
+.project-expand-title {
+  font-family: 'Unbounded', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: clamp(22px, 3vw, 30px);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--text);
+  margin: 0;
+}
+
+/* Bullet list */
+.project-expand-bullets {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.project-expand-bullet {
+  display: flex;
+  gap: 10px;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--text);
+  opacity: 0.75;
+}
+
+.project-expand-bullet::before {
+  content: '—';
+  color: var(--accent);
+  flex-shrink: 0;
+  opacity: 0.7;
+  margin-top: 0px;
+}
+
+/* Stack row */
+.project-expand-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 2px;
+  border-top: 0.5px solid color-mix(in srgb, var(--secondary) 40%, transparent);
+  padding-top: 14px;
+}
+
+/* Links row */
+.project-expand-links {
+  display: flex;
+  gap: 10px;
+}
+
+.project-expand-link {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  border-radius: 6px;
+  padding: 5px 12px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.project-expand-link:hover {
+  background: var(--accent);
+  color: var(--bg);
+}

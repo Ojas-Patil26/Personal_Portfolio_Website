@@ -1,0 +1,267 @@
+/* ══════════════════════════════════════════
+   Contact Section
+   ══════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&display=swap');
+
+.section-contact {
+  padding: 120px 0 100px;
+  background: var(--bg);
+  color: var(--text);
+  position: relative;
+  z-index: 10;
+}
+
+/* ── Eyebrow ─────────────────────────────── */
+.contact-eyebrow {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 24px;
+}
+
+/* ── Giant heading as mailto link ───────── */
+.contact-heading-link {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 16px;
+  text-decoration: none;
+  margin-bottom: 32px;
+  cursor: pointer;
+
+  /* Reveal: slide up + fade */
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity   0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.1s,
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+}
+
+.contact-heading-link.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact-heading {
+  font-family: 'Unbounded', system-ui, sans-serif;
+  font-weight: 900;
+  font-size: clamp(3rem, 8vw, 10rem);
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  color: var(--text);
+  margin: 0;
+  transition: color 0.25s ease;
+}
+
+/* Italic orange on "talk." */
+.contact-heading em {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.contact-heading-link:hover .contact-heading {
+  color: var(--accent);
+}
+
+/* Arrow beside the heading */
+.contact-heading-arrow {
+  font-size: clamp(1.5rem, 3vw, 4rem);
+  line-height: 1;
+  color: var(--accent);
+  margin-top: 0.2em;
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-shrink: 0;
+}
+
+.contact-heading-link:hover .contact-heading-arrow {
+  transform: translate(6px, -6px);
+}
+
+/* ── Sub text ────────────────────────────── */
+.contact-sub {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(15px, 1.5vw, 18px);
+  font-weight: 400;
+  line-height: 1.7;
+  color: var(--text);
+  opacity: 0;
+  max-width: 520px;
+  margin: 0 0 64px 0;
+  transform: translateY(20px);
+  transition:
+    opacity   0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.35s,
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.35s;
+}
+
+.contact-sub.in-view {
+  opacity: 0.65;
+  transform: translateY(0);
+}
+
+/* ── Socials grid ────────────────────────── */
+.contact-socials {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  border: 1px solid color-mix(in srgb, var(--secondary) 35%, transparent);
+  border-radius: 12px;
+  overflow: hidden;
+  max-width: 840px;
+  margin-bottom: 64px;
+
+  /* Grid reveal */
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity   0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.45s,
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.45s;
+}
+
+.contact-socials.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.contact-social-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 24px 20px;
+  text-decoration: none;
+  background: transparent;
+  border-right: 1px solid color-mix(in srgb, var(--secondary) 35%, transparent);
+  transition:
+    background 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-social-item:last-child {
+  border-right: none;
+}
+
+.contact-social-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.contact-social-item:hover::after {
+  opacity: 0.06;
+}
+
+.contact-social-label {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  position: relative;
+  z-index: 1;
+}
+
+.contact-social-value {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text);
+  opacity: 0.6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  position: relative;
+  z-index: 1;
+  transition: opacity 0.25s ease;
+}
+
+.contact-social-item:hover .contact-social-value {
+  opacity: 1;
+}
+
+.contact-social-icon {
+  font-size: 16px;
+  color: var(--accent);
+  opacity: 0.5;
+  margin-top: auto;
+  position: relative;
+  z-index: 1;
+  transition:
+    opacity   0.25s ease,
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact-social-item:hover .contact-social-icon {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+/* ── Footer ──────────────────────────────── */
+.contact-footer {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text);
+  opacity: 0;
+  text-align: center;
+  transition: opacity 0.5s ease 0.7s;
+}
+
+.contact-footer.in-view {
+  opacity: 0.3;
+}
+
+/* ── Responsive ──────────────────────────── */
+@media (max-width: 768px) {
+  .section-contact {
+    padding: 80px 0 80px;
+  }
+
+  .contact-socials {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 100%;
+  }
+
+  .contact-social-item:nth-child(2) {
+    border-right: none;
+  }
+
+  .contact-social-item {
+    border-bottom: 1px solid color-mix(in srgb, var(--secondary) 35%, transparent);
+  }
+
+  .contact-social-item:nth-child(3),
+  .contact-social-item:nth-child(4) {
+    border-bottom: none;
+  }
+
+  .contact-social-value {
+    font-size: 11px;
+  }
+}
+
+/* ── Reduced motion ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .contact-heading-link,
+  .contact-sub,
+  .contact-socials,
+  .contact-footer {
+    transition: opacity 0.3s ease;
+    transform: none;
+  }
+
+  .contact-heading-link:hover .contact-heading-arrow {
+    transform: none;
+  }
+
+  .contact-social-item:hover .contact-social-icon {
+    transform: none;
+  }
+}

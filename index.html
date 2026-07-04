@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ojas Patil · Software Engineer</title>
+    <style>
+      /* ── French press loading screen ──
+         Inline & vanilla ON PURPOSE so it paints before the React/three.js
+         bundle downloads. The plunger descends ONCE, its position mapped to
+         real load progress; at 100% the press pours, a drop falls, and
+         splatters into glowing hero-palette particles. */
+      #loader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        overflow: hidden;
+      }
+      #loader.done {
+        pointer-events: none;
+      }
+      /* the black backdrop + press live on .wrapper so it can fade out while
+         the splatter particles (siblings) linger over the revealed site */
+      #loader .wrapper {
+        position: absolute;
+        inset: 0;
+        background: #000;
+        display: flex;
+        transition: opacity 0.6s ease;
+      }
+      #loader .loader-brand {
+        position: absolute;
+        top: 28px;
+        left: 40px;
+        color: #fff;
+        font-family: 'Unbounded', 'Inter', system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 20px;
+        letter-spacing: 0.02em;
+        z-index: 20;
+        transition: opacity 0.6s ease;
+      }
+      #loader.done .wrapper,
+      #loader.done .loader-brand {
+        opacity: 0;
+      }
+      @media (max-width: 768px) {
+        #loader .loader-brand { left: 24px; }
+      }
+
+      #loader .press {
+        margin: auto;
+        width: 30vh;
+        max-width: 70%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -20%);
+        transform-origin: 50% 20%;
+      }
+      #loader .wrapper.is-loaded .press {
+        animation: ldr-pour-once 3000ms ease-in-out forwards;
+      }
+      #loader .press:after {
+        content: '';
+        display: block;
+        padding-top: 180%;
+      }
+
+      #loader .holder {
+        position: absolute;
+        top: 25%;
+        right: 100%;
+        bottom: 25%;
+        left: auto;
+        width: 20%;
+        background: #6F4E37;
+        border-right: 0;
+        border-radius: 100% 0 0 100% / 20% 0 0 20%;
+      }
+      #loader .holder:after {
+        position: absolute;
+        top: 10%;
+        right: 0;
+        bottom: 10%;
+        left: 37%;
+        content: '';
+        display: block;
+        background: #000000;
+        border-radius: 100% 0 0 100% / 20% 0 0 20%;
+      }
+
+      #loader .carafe {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        box-sizing: border-box;
+        height: 80%;
+        background: rgba(255, 246, 235, 0.2);
+        border-radius: 0 0 4% 4%;
+        box-shadow: inset -4rem 0 rgba(255, 255, 255, 0.1);
+        z-index: 0;
+      }
+
+      #loader .drop {
+        width: 30%;
+        background: rgba(111, 78, 55, 0.9);
+        position: absolute;
+        left: 95%;
+        top: 4%;
+        border-radius: 0 100% 100% 100%;
+        transform: rotate(-45deg) scale(0);
+        transform-origin: left top;
+        z-index: 1;
+        opacity: 0;
+      }
+      #loader .wrapper.is-loaded .drop {
+        animation: ldr-drop-once 800ms forwards;
+        animation-delay: 1950ms;
+      }
+      #loader .drop:after {
+        content: '';
+        display: block;
+        padding-top: 100%;
+      }
+
+      #loader .spout {
+        position: absolute;
+        top: 4%;
+        right: auto;
+        bottom: auto;
+        left: 100%;
+        width: 0;
+        height: 0;
+        padding-bottom: 140%;
+        padding-left: 14%;
+        overflow: hidden;
+      }
+      #loader .spout:after {
+        content: "";
+        display: block;
+        width: 0;
+        height: 0;
+        margin-left: -500px;
+        border-bottom: 500px solid transparent;
+        border-left: 500px solid rgba(255, 246, 235, 0.2);
+      }
+
+      #loader .contents {
+        position: absolute;
+        top: 0;
+        right: 5%;
+        bottom: 5%;
+        left: 5%;
+        box-sizing: border-box;
+        background: rgba(255, 246, 235, 0.1);
+        border-radius: 0 0 1rem 1rem;
+        z-index: -1;
+        overflow: hidden;
+      }
+
+      #loader .lid {
+        position: absolute;
+        right: 0;
+        left: 0;
+        background: #6F4E37;
+        border-top-right-radius: 20% 50%;
+        border-top-left-radius: 20% 50%;
+        height: 20%;
+        z-index: 10;
+        box-shadow: inset -3rem 0 rgba(0, 0, 0, 0.12);
+      }
+      #loader .lid:after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: auto;
+        right: -2.5%;
+        bottom: 0;
+        left: -2.5%;
+        background: #6F4E37;
+        height: 20%;
+        border-radius: .25rem;
+        box-shadow: inset -4rem -1rem rgba(0, 0, 0, 0.12);
+      }
+
+      /* plunger position is driven by JS (inline transform) — it maps 1:1 to
+         load progress. Base = fully raised. */
+      #loader .plunger {
+        position: absolute;
+        top: 0;
+        right: 5%;
+        bottom: 15%;
+        left: 5%;
+        transform: translateY(-72%);
+      }
+      #loader .wrapper.is-loaded .plunger {
+        animation: ldr-keep-plunged 3000ms forwards;
+      }
+
+      #loader .shaft {
+        width: 6%;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        margin-left: -3%;
+        bottom: 0;
+        background: #A67B5B;
+        box-shadow: inset -.25rem .75rem rgba(0, 0, 0, 0.12);
+      }
+      #loader .shaft .knob {
+        content: '';
+        display: block;
+        position: absolute;
+        bottom: 98%;
+        width: 400%;
+        border-radius: 100%;
+        left: -150%;
+        background: #6F4E37;
+        box-shadow: inset -.5rem 0 rgba(0, 0, 0, 0.12);
+      }
+      #loader .shaft .knob:after {
+        content: '';
+        display: block;
+        padding-top: 100%;
+      }
+
+      #loader .filter {
+        position: absolute;
+        top: auto;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: #A67B5B;
+        height: 5%;
+        border: .3rem solid #6F4E37;
+        border-top: 0;
+        border-bottom-right-radius: 1rem;
+        border-bottom-left-radius: 1rem;
+        box-sizing: border-box;
+      }
+
+      /* coffee layers also driven by JS during the plunge (inline top /
+         scaleY / opacity), then handed to the is-loaded pour animations */
+      #loader .brewed-coffee {
+        position: absolute;
+        top: 5%;
+        left: -100%;
+        right: -100%;
+        bottom: -100%;
+        background: rgba(111, 78, 55, 0.7);
+        z-index: 1;
+        opacity: 0;
+        transform-origin: 50% 0%;
+      }
+      #loader .wrapper.is-loaded .brewed-coffee {
+        animation: ldr-fluid-pour 3000ms ease-in-out forwards;
+      }
+
+      #loader .dark-coffee {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 5%;
+        bottom: 0;
+        background: rgba(51, 36, 9, 0.95);
+        border-radius: 0 0 1rem 1rem;
+        z-index: 2;
+        transform: scaleY(0);
+        transform-origin: top center;
+      }
+      #loader .wrapper.is-loaded .dark-coffee {
+        animation: ldr-keep-dark 3000ms forwards;
+      }
+
+      @keyframes ldr-pour-once {
+        0% { transform: translate(-50%, -20%) rotate(0deg); }
+        65%, 100% { transform: translate(-50%, -20%) rotate(90deg); }
+      }
+      @keyframes ldr-fluid-pour {
+        0% { transform: rotate(0deg) translateX(0); opacity: 1; }
+        65% { transform: rotate(-90deg) translateX(0); opacity: 1; }
+        83%, 100% { transform: rotate(-90deg) translateX(-100%); opacity: 1; }
+      }
+      @keyframes ldr-keep-dark {
+        0%, 100% { top: 85.5%; transform: scaleY(1); }
+      }
+      @keyframes ldr-keep-plunged {
+        0%, 100% { transform: translateY(0); }
+      }
+      @keyframes ldr-drop-once {
+        0% {
+          transform: rotate(-45deg) scale(0) translate(0, 0);
+          opacity: 1;
+          animation-timing-function: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        30% {
+          transform: rotate(-45deg) scale(1.1) translate(0, 0);
+          opacity: 1;
+          animation-timing-function: cubic-bezier(0.5, 0, 1, 1);
+        }
+        99% { opacity: 1; }
+        100% {
+          transform: rotate(-45deg) scale(0.8, 1) translate(40vh, 40vh);
+          opacity: 0;
+        }
+      }
+
+      #loader .particles-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 15;
+        overflow: hidden;
+      }
+      #loader .particle {
+        position: absolute;
+        border-radius: 3px;
+        opacity: 0;
+        animation: ldr-splatter 2s cubic-bezier(0.16, 0.84, 0.44, 1) forwards;
+      }
+      @keyframes ldr-splatter {
+        0% {
+          transform: translate(-50%, -50%) rotate(var(--rot)) scale(1);
+          opacity: 1;
+        }
+        70% { opacity: 1; }
+        100% {
+          transform: translate(var(--tx), var(--ty)) rotate(var(--rot)) scale(0.9);
+          opacity: 0;
+        }
+      }
+
+      /* prefers-reduced-motion: static plunged press, plain fade — no churn */
+      @media (prefers-reduced-motion: reduce) {
+        #loader .press,
+        #loader .plunger,
+        #loader .brewed-coffee,
+        #loader .dark-coffee,
+        #loader .drop,
+        #loader .particle {
+          animation: none !important;
+        }
+        #loader .plunger { transform: translateY(0) !important; }
+        #loader .dark-coffee { top: 85.5% !important; transform: scaleY(1) !important; }
+      }
+    </style>
+    <noscript>
+      <style>#loader { display: none; }</style>
+    </noscript>
+  </head>
+  <body>
+    <div id="loader" aria-hidden="true">
+      <div class="wrapper" id="loader-wrapper">
+        <div class="press">
+          <div class="holder"></div>
+          <div class="lid"></div>
+          <div class="carafe">
+            <div class="drop"></div>
+            <div class="spout"></div>
+            <div class="contents">
+              <div class="brewed-coffee"></div>
+              <div class="dark-coffee"></div>
+            </div>
+          </div>
+          <div class="plunger" id="loader-plunger">
+            <div class="shaft">
+              <div class="knob"></div>
+            </div>
+            <div class="filter"></div>
+          </div>
+        </div>
+      </div>
+      <div class="loader-brand">.ojas</div>
+      <div class="particles-container" id="loader-particles"></div>
+    </div>
+
+    <script>
+      /* French press loader — inline & vanilla ON PURPOSE (paints before the
+         bundle). Progress: /figurine.webm stream 55% + 'site:ready' 30% +
+         fonts 10% + window load 5%.
+
+         The plunger descends ONCE — its position IS the load progress. The
+         descent is time-gated to a 2.5s minimum (fast loads still read as a
+         press), catches up smoothly when data streams in, and creeps slowly
+         during stalls (capped at 98% until loading truly completes). At 100%:
+         pour (3s) → drop lands at ~2.75s → glowing splatter blast (150
+         particles, hero palette) lingers over the reveal while the press
+         fades. Failsafe: forced completion at 10s — never block the site. */
+      ;(function () {
+        'use strict'
+        if (window.__ojasLoaderRan) return
+        window.__ojasLoaderRan = true
+
+        var root = document.getElementById('loader')
+        var wrapper = document.getElementById('loader-wrapper')
+        var particles = document.getElementById('loader-particles')
+        var plunger = document.getElementById('loader-plunger')
+        if (!root || !wrapper || !particles || !plunger) return
+        var brewed = wrapper.querySelector('.brewed-coffee')
+        var dark = wrapper.querySelector('.dark-coffee')
+        if (!brewed || !dark) return
+
+        var torn = false
+        var raf = 0
+
+        function teardown () {
+          if (torn) return
+          torn = true
+          if (raf) cancelAnimationFrame(raf)
+          document.body.style.overflow = ''
+          if (root.parentNode) root.parentNode.removeChild(root)
+        }
+
+        try {
+          run()
+        } catch (err) {
+          teardown()
+        }
+
+        function run () {
+          var reduced = false
+          try {
+            reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+          } catch (e) { reduced = false }
+
+          document.body.style.overflow = 'hidden'
+
+          /* ── constants ── */
+          var MIN_MS = 2500          /* plunger never bottoms out faster      */
+          var CATCHUP = 1.2          /* max displayed progress per second     */
+          var CREEP = 0.015          /* stall creep, progress per second      */
+          var STALL_CAP = 0.98       /* creep can never fake completion       */
+          var FILL_END = 0.08        /* first 8% of progress = coffee fills   */
+          var SPLAT_AT = 2750        /* drop impact after pour starts (CSS)   */
+          var SPLAT_MS = 2000        /* particle lifetime (matches CSS)       */
+          var FAILSAFE_MS = 10000    /* absolute cap — never block the site   */
+          var W_WEBM = 0.55, W_APP = 0.30, W_FONTS = 0.10, W_LOAD = 0.05
+          var PALETTE = ['#4285f5', '#eb4236', '#faba03', '#ffffff']
+
+          /* ── progress signals ── */
+          var start = performance.now()
+          var webmP = 0, appP = 0, fontsP = 0, loadP = 0
+          var fakeWebm = false, fakeStart = 0
+          var forced = false
+          var disp = 0
+          var last = start
+
+          window.addEventListener('site:ready', function () { appP = 1 }, { once: true })
+          window.addEventListener('load', function () { loadP = 1 }, { once: true })
+          if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(function () { fontsP = 1 })
+          } else {
+            fontsP = 1
+          }
+
+          function startFakeWebm () {
+            if (!fakeWebm) { fakeWebm = true; fakeStart = performance.now() }
+          }
+
+          try {
+            fetch('/figurine.webm').then(function (res) {
+              var len = parseInt(res.headers.get('content-length') || '0', 10)
+              if (!res.ok || !res.body || !len) { startFakeWebm(); return }
+              var reader = res.body.getReader()
+              var got = 0
+              function pump () {
+                reader.read().then(function (r) {
+                  if (r.done) { webmP = 1; return }
+                  got += r.value.length
+                  webmP = Math.min(1, got / len)
+                  pump()
+                }).catch(startFakeWebm)
+              }
+              pump()
+            }).catch(startFakeWebm)
+          } catch (e) { startFakeWebm() }
+
+          setTimeout(function () { forced = true }, FAILSAFE_MS)
+
+          function realProgress (now) {
+            if (forced) return 1
+            var wp = fakeWebm ? Math.min(1, (now - fakeStart) / 6000) : webmP
+            return W_WEBM * wp + W_APP * appP + W_FONTS * fontsP + W_LOAD * loadP
+          }
+
+          /* ── render: displayed progress → press pose ── */
+          function render (d) {
+            var fill = Math.min(1, d / FILL_END)
+            var pl = Math.max(0, (d - FILL_END) / (1 - FILL_END))
+            plunger.style.transform = 'translateY(' + (-72 * (1 - pl)).toFixed(3) + '%)'
+            dark.style.transform = 'scaleY(' + fill.toFixed(3) + ')'
+            dark.style.top = (5 + 80.5 * pl).toFixed(3) + '%'
+            brewed.style.opacity = pl > 0.02 ? '1' : '0'
+          }
+
+          /* ── finale: pour → drop → splatter → fade ── */
+          function splatter () {
+            for (var i = 0; i < 150; i++) {
+              var p = document.createElement('div')
+              p.className = 'particle'
+              var c = PALETTE[Math.floor(Math.random() * PALETTE.length)]
+              p.style.backgroundColor = c
+              p.style.boxShadow = '0 0 10px 2px ' + c + ', 0 0 28px 8px ' + c + '55'
+              var size = (Math.random() * 8 + 4) * 1.5
+              p.style.width = (size * 2.5).toFixed(1) + 'px'
+              p.style.height = Math.max(3, size * 0.3).toFixed(1) + 'px'
+              p.style.left = '50%'
+              p.style.top = '98%'
+              var angle = Math.random() * Math.PI * 2
+              var velocity = Math.random() * 800 + 400
+              p.style.setProperty('--tx', (Math.cos(angle) * velocity).toFixed(1) + 'px')
+              p.style.setProperty('--ty', (Math.sin(angle) * velocity).toFixed(1) + 'px')
+              p.style.setProperty('--rot', angle.toFixed(4) + 'rad')
+              particles.appendChild(p)
+            }
+          }
+
+          function beginPour () {
+            render(1)
+            wrapper.classList.add('is-loaded')
+            setTimeout(function () {
+              if (torn) return
+              splatter()
+              root.classList.add('done')
+              setTimeout(teardown, SPLAT_MS + 150)
+            }, SPLAT_AT)
+          }
+
+          if (reduced) {
+            /* static plunged press, plain fade — no pour, no splatter */
+            var pollReduced = function () {
+              if (torn) return
+              if (realProgress(performance.now()) >= 1) {
+                root.classList.add('done')
+                setTimeout(teardown, 650)
+                return
+              }
+              raf = requestAnimationFrame(pollReduced)
+            }
+            raf = requestAnimationFrame(pollReduced)
+            return
+          }
+
+          function tick (now) {
+            if (torn) return
+            var dt = Math.min((now - last) / 1000, 0.05)
+            last = now
+            /* target = real progress, but never faster than the 2.5s floor */
+            var target = Math.min(realProgress(now), (now - start) / MIN_MS)
+            if (forced) {
+              disp = 1
+            } else if (target > disp) {
+              disp = Math.min(target, disp + CATCHUP * dt)   /* smooth catch-up */
+            } else {
+              disp = Math.min(STALL_CAP, disp + CREEP * dt)  /* stall creep */
+            }
+            render(disp)
+            if (disp >= 1) { beginPour(); return }
+            raf = requestAnimationFrame(tick)
+          }
+          raf = requestAnimationFrame(tick)
+        }
+      })()
+    </script>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

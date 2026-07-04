@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+
+:root {
+  /* Palette */
+  --light-bg:        #FFFFFF;
+  --dark-bg:         #000000;
+  --light-text:      #4A4A4A;
+  --dark-text:       #D1D0D0;
+  --light-accent:    #E04500;   /* deep orange — readable on white */
+  --dark-accent:     #FF5500;   /* electric orange — full vibrancy on black */
+  --light-secondary: #C8C0B8;   /* warm-tinted neutral */
+  --dark-secondary:  #4A2E10;   /* warm dark brown */
+
+  /* Active (resolved) values — default to light mode */
+  --bg: var(--light-bg);
+  --text: var(--light-text);
+  --accent: var(--light-accent);
+  --secondary: var(--light-secondary);
+  --nav-bg: rgba(255, 255, 255, 0.7);
+}
+
+body.dark {
+  --bg: var(--dark-bg);
+  --text: var(--dark-text);
+  --accent: var(--dark-accent);
+  --secondary: var(--dark-secondary);
+  --nav-bg: rgba(0, 0, 0, 0.55);
+}
+
+/* 0.4s ease colour transition across the entire page on theme toggle */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  transition: background-color 0.4s ease, color 0.4s ease,
+    border-color 0.4s ease, fill 0.4s ease;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ── Shared section inner container ──────────
+   Used by Experience, Contact, and future
+   sections that don't need a full-bleed layout. */
+.section-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 80px;
+}
+
+@media (max-width: 768px) {
+  .section-inner {
+    padding: 0 24px;
+  }
+}
+
+/* scroll room so the hero video can scrub; real sections come later */
+.placeholder-sections section {
+  height: 60vh;
+}

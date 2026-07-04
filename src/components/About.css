@@ -1,0 +1,390 @@
+/* ══════════════════════════════════════════
+   About Section
+   ══════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@700;900&display=swap');
+
+/* ── Section shell ───────────────────────── */
+.section-about {
+  background: var(--bg);
+  color: var(--text);
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+}
+
+/* ── Ghost marquee background ────────────── */
+.about-bg-marquee {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.about-bg-marquee-track {
+  display: flex;
+  width: max-content;
+  white-space: nowrap;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(100px, 14vw, 180px);
+  line-height: 1;
+  color: var(--text);
+  opacity: 0.05;
+  animation: about-marquee 35s linear infinite;
+}
+
+body.dark .about-bg-marquee-track {
+  opacity: 0.07;
+}
+
+@keyframes about-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-bg-marquee-track { animation: none; }
+}
+
+/* ── Full-height two-column grid ─────────── */
+.about-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  min-height: 100svh; /* iOS Safari safe */
+  align-items: stretch;
+  position: relative;
+  z-index: 1;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+/* ── Left column ─────────────────────────── */
+.about-left {
+  padding: 140px 80px 120px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Accent border + text block */
+.about-text {
+  padding-left: 28px;
+  border-left: 2px solid transparent;
+  max-width: 520px;
+  transition: border-color 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+}
+
+.about-text.in-view {
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* ── Eyebrow ─────────────────────────────── */
+.about-eyebrow {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity  0.45s cubic-bezier(0.16, 1, 0.3, 1) 0s,
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0s;
+}
+
+.about-text.in-view .about-eyebrow {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Heading ─────────────────────────────── */
+.about-heading {
+  font-family: 'Unbounded', system-ui, sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0 0 36px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* "Hi, I'm" — fades in first, muted */
+.about-heading-hi {
+  font-size: clamp(22px, 3vw, 38px);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity  0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s,
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+
+.about-text.in-view .about-heading-hi {
+  opacity: 0.4;
+  transform: translateY(0);
+}
+
+/* "Ojas Patil." — italic serif for editorial contrast + fits one line */
+.about-heading-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: clamp(44px, 6.5vw, 88px);
+  line-height: 1;
+  color: var(--text);
+  white-space: nowrap;
+  position: relative;
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity  0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.3s,
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
+}
+
+.about-text.in-view .about-heading-name {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Accent underline sweeps in */
+.about-heading-name::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.9s;
+}
+
+.about-text.in-view .about-heading-name::after {
+  width: 60%;
+}
+
+/* ── Bio — Cormorant Garamond serif ──────── */
+.about-bio {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.about-bio p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px, 1.7vw, 24px);
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--text);
+  margin: 0;
+  opacity: 0;
+  transform: translateY(16px);
+  filter: blur(3px);
+  transition:
+    opacity  0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    filter   0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.about-bio.in-view p:nth-child(1) {
+  transition-delay: 0.4s;
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.about-bio.in-view p:nth-child(2) {
+  transition-delay: 0.55s;
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.about-bio.in-view p:nth-child(3) {
+  transition-delay: 0.7s;
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* CTA line — same as other paras but slightly muted */
+.about-bio.in-view .about-cta-line {
+  opacity: 0.75;
+}
+
+/* Orange italic emphasis — the key visual */
+.about-bio em {
+  font-style: italic;
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.about-cta-line {
+  padding-top: 18px;
+  border-top: 1px solid color-mix(in srgb, var(--secondary) 35%, transparent);
+  font-size: clamp(15px, 1.3vw, 18px);
+}
+
+/* Inline contact link — orange, underline sweeps in on hover */
+.about-contact-link {
+  color: var(--accent);
+  font-style: italic;
+  font-weight: 500;
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  transition: border-color 0.25s ease, opacity 0.25s ease;
+}
+
+.about-contact-link:hover,
+.about-contact-link:focus-visible {
+  border-color: var(--accent);
+  opacity: 0.85;
+}
+
+/* ── Right column — full-height photo ────── */
+.about-right {
+  position: relative;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* Swoop in from the right — arc + rotation snap */
+.about-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center 65%; /* slightly below center — person looks grounded */
+  user-select: none;
+  pointer-events: none;
+
+  /* Initial state — off-screen right, rotated */
+  opacity: 0;
+  transform: translateX(100%) rotate(5deg);
+}
+
+.about-photo.in-view {
+  animation: photo-swoop-in 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+
+@keyframes photo-swoop-in {
+  0%   {
+    opacity: 0;
+    transform: translateX(100%) rotate(5deg);
+  }
+  45%  {
+    opacity: 1;
+    transform: translateX(-1.5%) rotate(-0.8deg);
+  }
+  70%  {
+    transform: translateX(0.5%) rotate(0.2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+  }
+}
+
+
+/* ── Responsive ──────────────────────────── */
+@media (max-width: 768px) {
+  .about-layout {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  /* Photo column stacks above text on mobile */
+  .about-right {
+    min-height: 55vh;
+    order: -1;
+  }
+
+  .about-photo {
+    object-position: center 30%; /* show face more prominently on mobile */
+  }
+
+  .about-left {
+    padding: 60px 24px 80px;
+    justify-content: flex-start;
+  }
+
+  .about-text {
+    padding-left: 18px;
+    max-width: 100%;
+  }
+
+  .about-heading-hi {
+    font-size: clamp(18px, 5.5vw, 28px);
+  }
+
+  .about-heading-name {
+    font-size: clamp(36px, 10vw, 60px);
+    white-space: nowrap;
+  }
+
+  .about-bio p {
+    font-size: clamp(17px, 4vw, 22px);
+  }
+}
+
+/* ── Reduced motion ──────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .about-text {
+    transition: border-color 0.4s ease;
+    border-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+
+  .about-eyebrow {
+    transition: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .about-heading-hi {
+    transition: none;
+    opacity: 0.4;
+    transform: none;
+  }
+
+  .about-heading-name {
+    transition: none;
+    opacity: 1;
+    transform: none;
+    white-space: nowrap;
+  }
+
+  .about-heading-name::after {
+    transition: none;
+    width: 60%;
+  }
+
+  .about-bio p {
+    transition: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .about-bio .about-cta-line {
+    opacity: 0.75;
+  }
+
+  .about-photo {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
