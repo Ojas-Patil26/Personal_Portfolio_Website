@@ -9,6 +9,7 @@ export default function Hero() {
   const videoRef = useRef(null)
   const smoothTimeRef = useRef(0)
   const [isDark, setIsDark] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   /* ---------- theme toggle ---------- */
   useEffect(() => {
@@ -49,10 +50,15 @@ export default function Hero() {
       <nav className="navbar">
         <button className="brand" onClick={scrollToTop}>.ojas</button>
 
-        <ul className="nav-links">
+        <ul className={`nav-links${isMenuOpen ? ' open' : ''}`}>
           {NAV_LINKS.map((label) => (
             <li key={label}>
-              <a href={`#${label.toLowerCase()}`}>{label}</a>
+              <a
+                href={`#${label.toLowerCase()}`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {label}
+              </a>
             </li>
           ))}
         </ul>
@@ -63,6 +69,17 @@ export default function Hero() {
           aria-label="Toggle colour theme"
         >
           {isDark ? '🌙' : '☀️'}
+        </button>
+
+        <button
+          className={`hamburger${isMenuOpen ? ' open' : ''}`}
+          onClick={() => setIsMenuOpen((o) => !o)}
+          aria-label="Toggle navigation menu"
+          aria-expanded={isMenuOpen}
+        >
+          <span />
+          <span />
+          <span />
         </button>
       </nav>
 

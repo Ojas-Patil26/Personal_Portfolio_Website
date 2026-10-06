@@ -197,6 +197,26 @@ export default function Projects() {
   const [activeIdx, setActiveIdx] = useState(0)
   const [expandedIdx, setExpandedIdx] = useState(null)
 
+  // Orbit radius must shrink with the card size (set via CSS breakpoints)
+  // or the cards get pushed outside the viewport and clipped by
+  // .projects-sticky's overflow: hidden on small screens.
+  const [radius, setRadius] = useState(() => {
+    if (typeof window === 'undefined') return 300
+    const w = window.innerWidth
+    if (w <= 480) return 60
+    if (w <= 768) return 120
+    return 300
+  })
+
+  useEffect(() => {
+    const updateRadius = () => {
+      const w = window.innerWidth
+      setRadius(w <= 480 ? 60 : w <= 768 ? 120 : 300)
+    }
+    window.addEventListener('resize', updateRadius)
+    return () => window.removeEventListener('resize', updateRadius)
+  }, [])
+
   useMotionValueEvent(smoothRotation, 'change', (v) => {
     const step = 360 / PROJECTS.length
     const idx =
@@ -216,8 +236,6 @@ export default function Projects() {
     document.body.style.overflow = expandedIdx !== null ? 'hidden' : ''
     return () => { document.body.style.overflow = '' }
   }, [expandedIdx])
-
-  const radius = 300
 
   const expandedProject = expandedIdx !== null ? PROJECTS[expandedIdx] : null
 

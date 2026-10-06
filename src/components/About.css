@@ -306,10 +306,9 @@ body.dark .about-bg-marquee-track {
     min-height: auto;
   }
 
-  /* Photo column stacks above text on mobile */
+  /* Photo column stacks below the text on mobile */
   .about-right {
     min-height: 55vh;
-    order: -1;
   }
 
   .about-photo {

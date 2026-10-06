@@ -382,6 +382,39 @@
   }
 }
 
+@media (max-width: 480px) {
+  .projects-deck {
+    width: 260px;
+    height: 260px;
+  }
+
+  /* Smaller phones — orbit radius shrinks to match (see Projects.jsx) */
+  .project-card {
+    width: 150px;
+    height: 200px;
+    padding: 12px;
+  }
+
+  .project-card-arm {
+    margin-left: -75px;  /* 150 / 2 */
+    margin-top: -100px;  /* 200 / 2 */
+  }
+
+  .project-card-title {
+    font-size: 14px;
+  }
+
+  .project-card-desc {
+    font-size: 9px;
+    -webkit-line-clamp: 3;
+  }
+
+  .project-card-index,
+  .project-card-tag {
+    font-size: 9px;
+  }
+}
+
 /* ══════════════════════════════════════════
    Expanded project overlay (portalled)
    ══════════════════════════════════════════ */
